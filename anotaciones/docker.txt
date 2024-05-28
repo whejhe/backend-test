@@ -1,0 +1,111 @@
+** Paso 1: Crear un archivo Dockerfile **
+# Indicamos la imagen base de Node.js versión 20
+FROM node:20-alpine
+
+# Establecemos el directorio de trabajo
+WORKDIR /app
+
+# Copiamos el archivo package.json
+COPY package*.json ./
+
+# Instalamos las dependencias
+RUN npm install
+
+# Copiamos el código de la aplicación
+COPY . .
+
+# Exponemos el puerto 3000
+EXPOSE 3000
+
+# Ejecutamos el comando para iniciar la aplicación
+CMD ["node", "src/index.js"]
+
+---------------------------------------------------------------
+** Paso 2: Crear un archivo docker-compose.yml **
+En el mismo directorio, crea un archivo llamado docker-compose.yml con el siguiente contenido:
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/
+--------------------------------------------------------------------------------------
+** Paso 3: Construir la imagen de Docker **
+Ejecuta docker desktop si no esta encendido.
+En el directorio raíz del proyecto, ejecuta el comando docker-compose build para construir la imagen de Docker.
+docker build -t whejhe/vtes-backend-app . (el punto es importante!!)
+docker push whejhe/vtes-backend-app
+----------------------------------------------------------------
+** Paso 4: Iniciar el contenedor **
+Ejecuta el comando docker-compose up para iniciar el contenedor.
+-----------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+** Paso 6: Crear un contenedor en AWS **
+Crea un cuenta en AWS y sigue estos pasos:
+
+    Ve a la consola de AWS y selecciona "Elastic Container Service" (ECS).
+    - Lanzar instancia
+    - Generar par de claves
+    Haz clic en "Create a cluster" y selecciona "EC2 Linux + Networking".
+    Selecciona la región y el tipo de instancia que deseas utilizar.
+    En la sección "Container instances", selecciona "Add container instance" y proporciona un nombre y una descripción.
+    En la sección "Container", selecciona "Add container" y proporciona un nombre y una descripción.
+    En la sección "Image", selecciona "Use an existing image" y proporciona la URL de la imagen en Docker Hub.
+    Configura los puertos y las variables de entorno según sea necesario.
+    Haz clic en "Create cluster" para crear el cluster.
+----------------------------------------------------------------------------------
+** Paso 7: Asignar un nombre de dominio con DuckDNS **
+Crea un cuenta en DuckDNS y sigue estos pasos:
+
+    Ve a la consola de DuckDNS y haz clic en "Add a domain".
+    Selecciona "Use a subdomain" y proporciona un nombre de subdominio (por ejemplo, "myapp").
+    Selecciona "Use an IP address" y proporciona la dirección IP pública de tu instancia de AWS.
+    Haz clic en "Add domain" para agregar el dominio.
+-------------------------------------------------------------------------------------
+** Paso 8: Configurar el enrutamiento en AWS **
+Ve a la consola de AWS y sigue estos pasos:
+
+    Selecciona "Route 53" y haz clic en "Create a hosted zone".
+    Selecciona "Public hosted zone" y proporciona el nombre de dominio que creaste en DuckDNS.
+    Haz clic en "Create hosted zone" para crear la zona de hosting.
+    Selecciona "Create a record set" y proporciona el nombre de dominio y la dirección IP pública de tu instancia de AWS.
+    Haz clic en "Create record set" para crear el registro.
+---------------------------------------------------------------------------------------
+docker-compose.yml
+
+version: '3'
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+
+  app:
+    image: whejhe/vtes-backend-app
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URL=mongodb+srv://dominguezalacid:Go5pINGCTevTV0tV@vtesdb.gf9nbee.mongodb.net/?retryWrites=true&w=majority&appName=VtesDB
+    networks:
+      - app-network
+ 
+-----------------------------------------------------------------------------------
+PS C:\Users\cfg\Downloads\Par de claves-AWS> ssh -i ubuntu.pem admin@35.180.65.153
+sudo apt update
+sudo apt install docker docker-compose
+
+----------------------------------------------------------------------
+añadir docker compose
+nano docker-compose.yml
+
+sudo docker-compose up -d  (-d es `para que se mantenga en ejecucion aunque cierre terminal)
+--------------------------------------------------------------------------
+cambiar reglas de seguridad en AWS
+- ir a seguridad
+- añadir puertos
+http://vtesapp.duckdns.org:3000/
+
+-----------------------------------------------------------

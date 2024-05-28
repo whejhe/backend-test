@@ -1,0 +1,18 @@
+MONGODB ATLAS
+https://www.youtube.com/watch?v=97FfXEy1zas
+https://cloud.mongodb.com/v2/65f7eb073f265f287debd21a#/overview
+
+AWS
+https://eu-west-3.console.aws.amazon.com/console/home?region=eu-west-3#
+
+DESPLIEGUE
+https://front-vtes.vercel.app/
+https://vtesapp.duckdns.org/
+https://aws.amazon.com/es/
+https://cloud.mongodb.com/v2/65f7eb073f265f287debd21a#/overview
+
+JSON VTES
+https://static.krcg.org/data/vtes.json
+
+Vigilar Coste
+https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/freetier

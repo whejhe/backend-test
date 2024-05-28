@@ -1,0 +1,4 @@
+1 - Creamos un archivo DockerFile:
+Desde dockerhub buscamos un dockerfile para node
+Con el dockerfile listo construimos nuestra imagen con:
+docker build . -t node-api-backend-test:latest
