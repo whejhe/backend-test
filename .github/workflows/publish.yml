@@ -1,0 +1,56 @@
+name: publish
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  create-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag whejhe/vtes-backend-test
+
+  push-docker-image:
+    runs-on: ubuntu-latest
+    needs: create-docker-image
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push Docker image
+        run: docker push whejhe/vtes-backend-test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: push-docker-image
+    steps:
+      - name: Deploy
+        run: echo "Deploying..."
+
+  test:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Test
+        run: echo "Testing..."
+
+  release:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Release
+        run: echo "Releasing..."
+
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - name: Cleanup
+        run: echo "Cleaning up..."
+

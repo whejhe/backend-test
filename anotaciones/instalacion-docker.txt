@@ -1,4 +1,14 @@
+
 1 - Creamos un archivo DockerFile:
-Desde dockerhub buscamos un dockerfile para node
-Con el dockerfile listo construimos nuestra imagen con:
-docker build . -t node-api-backend-test:latest
+2 - Creamos un archivo .dockerignore (para node_modules)
+3 - docker build -t docker-nodejs .
+4 - docker images (para ver las imagenes creadas)
+5 - docker run --name nombreDemiContenedor -p 443:443 docker-nodejs 
+(
+    crea un contenedor apartir de la imagen docker run nombreImagen 
+    puertoContenedor:puertoExpuesto
+)
+
+6 - docker ps (para ver contenedores)
+7 - docker stop 37e1d082070a  (docker stop (id o nameContainer) )
+8 - docker rm 37e1d082070a (para eliminar el contenedor que no la imagen)
